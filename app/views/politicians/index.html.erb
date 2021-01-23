@@ -1,0 +1,26 @@
+<div class="ui center aligned main basic container">
+  <h1 class="ui header">Políticos</h1>
+
+  <div class="ui grid">
+    <% @politicians.each do |politician| %>
+    <div class="four wide column">
+      <div class="ui card">
+        <a class="image" href="<%= politician_path(politician) %>">
+          <img
+            src="<%= url_for(politician.image) if politician.image.persisted? %>"
+          />
+        </a>
+        <div class="content">
+          <a class="header capitalize" href="<%= politician_path(politician) %>"
+            ><%= politician.name %></a
+          >
+          <div class="meta">
+            <span class="date"></span>
+          </div>
+          <div class="description"></div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="ui segment secondary basic padded">
+  <div class="ui container">
+    <h1 class="ui header"><%= @party.name %></h1>
+
+    <div class="ui items">
+      <div class="item">
+        <div class="ui medium image">
+          <img src="https://via.placeholder.com/150">
+        </div>
+        <div class="content">
+          <div class="meta">
+            <div class="ui list">
+              <div class="item">
+                <div class="header">Sigla</div>
+                <%= @party.shortname %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui container">
+  <h2 class="ui dividing header">Parlamentares</h2>
+
+  <div class="ui list">
+    <% @party.occupations.each do |occupation| %>
+    <div class="item">
+        <div class="left floated content">
+        <div class="ui segment basic"><%= occupation.year %></div>
+        </div>
+        <div class="content">
+        <span class="header"><%= occupation.role.name %> - <%= occupation.municipality.name %>/<%= occupation.state.name %></span>
+        <div class="description"><a href="<%= politician_path(id: occupation.politician_id) %>"><%= occupation.politician.name %></a></div>
+        </div>
+    </div>
+    <% end %>
+  </div>
+</div>

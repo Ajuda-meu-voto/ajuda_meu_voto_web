@@ -1,0 +1,18 @@
+<div class="ui center aligned main basic container" id="questions" data-answer_url="<%= api_help_me_answers_path %>" data-current_position="<%= @position %>" data-question_filter="<%= @question.filter %>">
+  <h3 class="ui header title"><%= @question.title %></h3>
+
+  <%= form_with url: '', method: :post do |form| %>
+    <div class="ui equal width grid options-container">
+        <% if @question.type == 'single-choice' %>
+          <%= render partial: 'shared/help_me_answer_single_choice_option', locals: { question: @question } %>
+        <% elsif @question.type == 'multiple-choice' %>
+          <%= render partial: 'shared/help_me_answer_multiple_choice_option', locals: { question: @question } %>
+        <% end %>
+
+    </div>
+    
+    <div class="ui basic padded segment">
+      <%= form.submit "Continuar", class: "ui primary button" %>
+    </div>
+  <% end %>
+</div>

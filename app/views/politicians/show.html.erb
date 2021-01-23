@@ -1,0 +1,63 @@
+<div class="ui segment secondary basic padded">
+  <div class="ui container">
+    <h1 class="ui capitalize header"><%= @politician.name %></h1>
+
+    <div class="ui items">
+      <div class="item">
+        <div class="ui small image">
+          <img
+            src="<%= url_for(@politician.image) if @politician.image.persisted? %>"
+          />
+        </div>
+        <div class="content">
+          <div class="meta">
+            <div class="ui list">
+              <div class="item">
+                <div class="header">Nome de Urna</div>
+                <label class="capitalize"><%= @politician.nickname %></label>
+              </div>
+              <div class="item">
+                <div class="header">Data de Nascimento</div>
+                <%= @politician.birthdate %>
+              </div>
+              <div class="item">
+                <div class="header">Gênero</div>
+                <%= @politician.gender %>
+              </div>
+              <div class="item">
+                <div class="header">Etnia</div>
+                <%= @politician.ethnicity.name %>
+              </div>
+              <div class="item">
+                <div class="header">Educação</div>
+                <%= @politician.education_level %>
+              </div>
+              <div class="item">
+                <div class="header">Estado Civil</div>
+                <%= @politician.marital_status %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui container">
+  <h2 class="ui dividing header">Cargos</h2>
+
+  <div class="ui list">
+    <% @politician.occupations.each do |occupation| %>
+    <div class="item">
+      <div class="left floated content">
+        <div class="ui segment basic"><%= occupation.year %></div>
+      </div>
+      <div class="content">
+        <span class="header"><%= occupation.role.name %></span>
+        <div class="description"><%= occupation.municipality.name %></div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
