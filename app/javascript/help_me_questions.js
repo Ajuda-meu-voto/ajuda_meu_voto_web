@@ -9,7 +9,7 @@ $(document).ready(function () {
     <div class="column option">
         <div class="ui checkbox">
         <input type="checkbox" name="answer" value="{{ID}}">
-        <label>{{TITLE}}</label>
+        <label class="capitalize">{{TITLE}}</label>
         </div>
     </div>
   `;
@@ -17,7 +17,7 @@ $(document).ready(function () {
     <div class="column option">
         <div class="ui radio">
         <input type="radio" name="answer" value="{{ID}}">
-        <label>{{TITLE}}</label>
+        <label class="capitalize">{{TITLE}}</label>
         </div>
     </div>
   `;

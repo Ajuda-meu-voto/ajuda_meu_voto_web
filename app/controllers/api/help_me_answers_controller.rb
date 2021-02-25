@@ -5,7 +5,7 @@ class Api::HelpMeAnswersController < ApplicationController
 
     question =
       ::Ajudameuvoto::Queries::FetchHelpMeQuestion.new.next(
-        last_position: create_params[:question][:position],
+        after_position: create_params[:question][:position],
         user_filters: session[:help_me_answers]
       )
 

@@ -1,8 +1,10 @@
 <% question.options.each do |option| %>
-<div class="wide column option">
-  <div class="ui checkbox">
-    <input type="checkbox" checked="" name="answer" value="<%= option.id %>" />
-    <label><%= option.title %></label>
+  <div class="wide column option">
+    <div class="ui checkbox">
+      <input type="checkbox" checked="" name="answer" value="<%= option.id %>" />
+      <label class="capitalize">
+        <%= option.title %>
+      </label>
+    </div>
   </div>
-</div>
-<% end %>>
+  <% end %>>

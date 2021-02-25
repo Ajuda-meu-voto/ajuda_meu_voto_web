@@ -1,4 +1,6 @@
 class PoliticiansController < ApplicationController
+  include DateHelper
+
   def show
     @politician = Politician.find(params[:id])
   end

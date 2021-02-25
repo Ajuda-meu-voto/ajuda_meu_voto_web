@@ -1,40 +1,42 @@
 <div class="ui segment secondary basic padded">
   <div class="ui container">
-    <h1 class="ui capitalize header"><%= @politician.name %></h1>
+    <h1 class="ui capitalize header">
+      <%= @politician.name %>
+    </h1>
 
     <div class="ui items">
       <div class="item">
         <div class="ui small image">
-          <img
-            src="<%= url_for(@politician.image) if @politician.image.persisted? %>"
-          />
+          <img src="<%= url_for(@politician.image) if @politician.image.persisted? %>" />
         </div>
         <div class="content">
           <div class="meta">
             <div class="ui list">
               <div class="item">
                 <div class="header">Nome de Urna</div>
-                <label class="capitalize"><%= @politician.nickname %></label>
+                <label class="capitalize">
+                  <%= @politician.nickname %>
+                </label>
               </div>
               <div class="item">
                 <div class="header">Data de Nascimento</div>
-                <%= @politician.birthdate %>
+                <%= format_date(@politician.birthdate) %>
               </div>
-              <div class="item">
+              <div class="item capitalize">
                 <div class="header">Gênero</div>
-                <%= @politician.gender %>
+                <%= t(@politician.gender) %>
               </div>
-              <div class="item">
+              <div class="item capitalize">
                 <div class="header">Etnia</div>
                 <%= @politician.ethnicity.name %>
               </div>
-              <div class="item">
+              <div class="item capitalize">
                 <div class="header">Educação</div>
                 <%= @politician.education_level %>
               </div>
-              <div class="item">
+              <div class="item capitalize">
                 <div class="header">Estado Civil</div>
-                <%= @politician.marital_status %>
+                <%= t(@politician.marital_status) %>
               </div>
             </div>
           </div>
@@ -49,15 +51,21 @@
 
   <div class="ui list">
     <% @politician.occupations.each do |occupation| %>
-    <div class="item">
-      <div class="left floated content">
-        <div class="ui segment basic"><%= occupation.year %></div>
+      <div class="item">
+        <div class="left floated content">
+          <div class="ui segment basic">
+            <%= occupation.year %>
+          </div>
+        </div>
+        <div class="content capitalize">
+          <span class="header">
+            <%= occupation.role.name %>
+          </span>
+          <div class="description">
+            <%= occupation.municipality.name %> - <%= occupation.state.name %>
+          </div>
+        </div>
       </div>
-      <div class="content">
-        <span class="header"><%= occupation.role.name %></span>
-        <div class="description"><%= occupation.municipality.name %></div>
-      </div>
-    </div>
-    <% end %>
+      <% end %>
   </div>
 </div>

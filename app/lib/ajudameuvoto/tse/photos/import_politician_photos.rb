@@ -52,7 +52,7 @@ class Ajudameuvoto::Tse::Photos::ImportPoliticianPhotos
         Rails.logger.debug "Processing photo file #{photo_file.name}"
 
         _, _state, tse_candidate_number = photo_file.name.match(REGEX_PARSE_PHOTO_FILENAME).to_a
-        Rails.logger.debug "Photo parsed as TSE number: #{num}"
+        Rails.logger.debug "Photo parsed as TSE number: #{tse_candidate_number}"
 
         politician = Ajudameuvoto::Queries::FindPoliticianByTseNumber.new.find(
           year: input[:election_year],

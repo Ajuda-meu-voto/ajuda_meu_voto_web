@@ -3,24 +3,40 @@
 
   <div class="ui grid">
     <% @politicians.each do |politician| %>
-    <div class="four wide column">
-      <div class="ui card">
-        <a class="image" href="<%= politician_path(politician) %>">
-          <img
-            src="<%= url_for(politician.image) if politician.image.persisted? %>"
-          />
-        </a>
-        <div class="content">
-          <a class="header capitalize" href="<%= politician_path(politician) %>"
-            ><%= politician.name %></a
-          >
-          <div class="meta">
-            <span class="date"></span>
+      <div class="four wide column">
+        <div class="ui card">
+          <a class="image" href="<%= politician_path(politician) %>">
+            <img src="<%= url_for(politician.image) if politician.image.persisted? %>" />
+          </a>
+          <div class="content">
+            <a class="header capitalize" href="<%= politician_path(politician) %>">
+              <%= politician.name %>
+            </a>
           </div>
-          <div class="description"></div>
+          <div class="content">
+            <div class="ui list">
+              <div class="item left aligned">
+                <strong>Etnia:</strong>
+                <label class="capitalize">
+                  <%= politician.ethnicity.name %>
+                </label>
+              </div>
+              <div class="item left aligned">
+                <strong>Gênero:</strong>
+                <label class="capitalize">
+                  <%= t(politician.gender) %>
+                </label>
+              </div>
+              <div class="item left aligned">
+                <strong>Educação:</strong>
+                <label class="capitalize">
+                  <%= politician.education_level %>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <% end %>
+      <% end %>
   </div>
 </div>

@@ -19,46 +19,28 @@ class Ajudameuvoto::Queries::FetchHelpMeQuestion
   end
 
   def initial
-    {
-      position: 1,
-      question: fetch_question(position: 0)
-    }
+    { position: 1, question: fetch_question }
   end
 
-  def next(opts)
-    last_position = opts[:last_position].blank? ? -1 : opts[:last_position].to_i
+  def next(after_position: -1, user_filters: {})
+    next_position = after_position.to_i + 1
 
-    next_position = last_position + 1
-
-    { position: next_position, question: fetch_question(position: next_position, user_filters: opts[:user_filters]) }
+    { position: next_position, question: fetch_question(position: next_position, user_filters: user_filters) }
   end
 
   private
 
-  def fetch_question(position:, user_filters: {})
+  def fetch_question(position: 0, user_filters: {})
     question = questions[position]
 
     return if question.blank?
 
-    process_options(question, user_filters)
+    populate_options(question, user_filters) if populate_options?(question)
   end
 
-  def process_options(question, user_filters)
-    return question if question.options_config.blank?
-
-    options_query = question.options_config[:repository].constantize
-
-    if question.options_config[:filter].present?
-      question.options_config[:filter].each do |filter|
-        options_query = options_query.where(filter => user_filters[filter])
-      end
-    end
-
-    new_options = options_query.all.map do |o|
-      { id: o.id, title: o&.name || o&.title }
-    end
-
-    new_options.sort_by! { |i| i[:title] }
+  def populate_options(question, user_filters)
+    new_options = build_question_options(question, repository: question_options_repository(question),
+                                                   user_filters: user_filters)
 
     HelpMeQuestion.new(
       title: question.title,
@@ -68,13 +50,44 @@ class Ajudameuvoto::Queries::FetchHelpMeQuestion
     )
   end
 
+  def build_question_options(question, repository:, user_filters:)
+    repository = apply_filters(question, repository: repository, user_filters: user_filters)
+    repository = apply_hides(question, repository: repository)
+
+    new_options = repository.all.map do |o|
+      { id: o.id, title: o&.name || o&.title }
+    end
+
+    new_options.sort_by { |i| i[:title] }
+  end
+
+  def apply_filters(question, repository:, user_filters:)
+    question.options_config.fetch(:filter, []).each do |filter|
+      repository = repository.where(filter => user_filters[filter])
+    end
+    repository
+  end
+
+  def apply_hides(question, repository:)
+    ids_to_hide = question.options_config[:hide] || []
+    repository.where.not(id: ids_to_hide)
+  end
+
+  def populate_options?(question)
+    question.options_config.present?
+  end
+
+  def question_options_repository(question)
+    question.options_config[:repository].constantize
+  end
+
   def questions
     [
       HelpMeQuestion.new(
         title: 'Qual cargo você quer votar?',
         filter: 'role_id',
         type: 'single-choice',
-        options_config: { repository: 'Role' }
+        options_config: { repository: 'Role', hide: [Role.vice_mayor.id] }
       ),
       HelpMeQuestion.new(
         title: 'Qual estado?',
@@ -89,10 +102,10 @@ class Ajudameuvoto::Queries::FetchHelpMeQuestion
         options_config: { repository: 'Municipality', filter: ['state_id'] }
       ),
       HelpMeQuestion.new(
-        title: 'Alguma etinia?',
+        title: 'Alguma etnia?',
         filter: 'ethnicity_id',
         type: 'multiple-choice',
-        options_config: { repository: 'Ethnicity' }
+        options_config: { repository: 'Ethnicity', hide: [Ethnicity.other.id] }
       )
     ]
   end
